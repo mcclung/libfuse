@@ -1,3 +1,9 @@
+libfuse 3.9.0 (2019-12-14)
+==========================
+
+* Added support for FUSE_EXPLICIT_INVAL_DATA to enable
+  only invalidate cached pages on explicit request.
+
 libfuse 3.8.0 (2019-11-03)
 ==========================
 
