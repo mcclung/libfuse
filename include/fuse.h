@@ -407,8 +407,8 @@ struct fuse_operations {
 	 *  - When writeback caching is disabled, the filesystem is
 	 *    expected to properly handle the O_APPEND flag and ensure
 	 *    that each write is appending to the end of the file.
-	 * 
-         *  - When writeback caching is enabled, the kernel will
+	 *
+	 *  - When writeback caching is enabled, the kernel will
 	 *    handle O_APPEND. However, unless all changes to the file
 	 *    come through the kernel this will not work reliably. The
 	 *    filesystem should thus either ignore the O_APPEND flag
@@ -680,8 +680,13 @@ struct fuse_operations {
 	 * Note : the unsigned long request submitted by the application
 	 * is truncated to 32 bits.
 	 */
+#if FUSE_USE_VERSION < 35
+	int (*ioctl) (const char *, int cmd, void *arg,
+		      struct fuse_file_info *, unsigned int flags, void *data);
+#else
 	int (*ioctl) (const char *, unsigned int cmd, void *arg,
 		      struct fuse_file_info *, unsigned int flags, void *data);
+#endif
 
 	/**
 	 * Poll for IO readiness events
@@ -1189,9 +1194,15 @@ int fuse_fs_removexattr(struct fuse_fs *fs, const char *path,
 			const char *name);
 int fuse_fs_bmap(struct fuse_fs *fs, const char *path, size_t blocksize,
 		 uint64_t *idx);
+#if FUSE_USE_VERSION < 35
+int fuse_fs_ioctl(struct fuse_fs *fs, const char *path, int cmd,
+		  void *arg, struct fuse_file_info *fi, unsigned int flags,
+		  void *data);
+#else
 int fuse_fs_ioctl(struct fuse_fs *fs, const char *path, unsigned int cmd,
 		  void *arg, struct fuse_file_info *fi, unsigned int flags,
 		  void *data);
+#endif
 int fuse_fs_poll(struct fuse_fs *fs, const char *path,
 		 struct fuse_file_info *fi, struct fuse_pollhandle *ph,
 		 unsigned *reventsp);
