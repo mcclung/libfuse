@@ -630,7 +630,7 @@ static void lo_opendir(fuse_req_t req, fuse_ino_t ino, struct fuse_file_info *fi
 
 	fi->fh = (uintptr_t) d;
 	if (lo->cache == CACHE_ALWAYS)
-		fi->keep_cache = 1;
+		fi->cache_readdir = 1;
 	fuse_reply_open(req, fi);
 	return;
 
@@ -1155,7 +1155,7 @@ static void lo_copy_file_range(fuse_req_t req, fuse_ino_t ino_in, off_t off_in,
 	res = copy_file_range(fi_in->fh, &off_in, fi_out->fh, &off_out, len,
 			      flags);
 	if (res < 0)
-		fuse_reply_err(req, -errno);
+		fuse_reply_err(req, errno);
 	else
 		fuse_reply_write(req, res);
 }
@@ -1174,7 +1174,7 @@ static void lo_lseek(fuse_req_t req, fuse_ino_t ino, off_t off, int whence,
 		fuse_reply_err(req, errno);
 }
 
-static struct fuse_lowlevel_ops lo_oper = {
+static const struct fuse_lowlevel_ops lo_oper = {
 	.init		= lo_init,
 	.lookup		= lo_lookup,
 	.mkdir		= lo_mkdir,
