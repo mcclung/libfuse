@@ -2,7 +2,7 @@
   FUSE: Filesystem in Userspace
   Copyright (C) 2001-2007  Miklos Szeredi <miklos@szeredi.hu>
 
-  This program can be distributed under the terms of the GNU GPL.
+  This program can be distributed under the terms of the GNU GPLv2.
   See the file COPYING.
 */
 
@@ -386,8 +386,6 @@ static void lo_mknod_symlink(fuse_req_t req, fuse_ino_t parent,
 	int saverr;
 	struct lo_inode *dir = lo_inode(req, parent);
 	struct fuse_entry_param e;
-
-	saverr = ENOMEM;
 
 	res = mknod_wrapper(dir->fd, name, link, mode, rdev);
 
