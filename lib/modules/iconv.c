@@ -644,7 +644,7 @@ static void iconv_help(void)
 	free(old);
 	printf(
 "    -o from_code=CHARSET   original encoding of file names (default: UTF-8)\n"
-"    -o to_code=CHARSET	    new encoding of the file names (default: %s)\n",
+"    -o to_code=CHARSET     new encoding of the file names (default: %s)\n",
 		charmap);
 	free(charmap);
 }
@@ -705,6 +705,7 @@ static struct fuse_fs *iconv_new(struct fuse_args *args,
 	if (old) {
 		setlocale(LC_CTYPE, old);
 		free(old);
+		old = NULL;
 	}
 
 	ic->next = next[0];
